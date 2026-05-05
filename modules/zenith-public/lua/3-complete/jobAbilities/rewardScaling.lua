@@ -8,7 +8,7 @@ require('modules/module_utils')
 local m = Module:new('c-j_rewardScaling')
 
 -- Override the Reward ability to use scaled healing values
-m:addOverride('xi.job_utils.beastmaster.onUseAbilityReward', function(player, target, ability)
+m:addOverride('xi.job_utils.beastmaster.useReward', function(player, target, ability)
     -- 1st need to get the pet food is equipped in the range slot.
     local rangeObj         = player:getEquipID(xi.slot.AMMO)
     local minimumHealing   = 0
