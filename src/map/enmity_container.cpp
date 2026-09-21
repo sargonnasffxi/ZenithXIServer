@@ -138,11 +138,11 @@ float CEnmityContainer::CalculateEnmityBonus(CBattleEntity* PEntity)
 
     if (auto* PChar = dynamic_cast<CCharEntity*>(PEntity))
     {
-        enmityBonus += PChar->PMeritPoints->GetMeritValue(MERIT_ENMITY_INCREASE, PChar) - PChar->PMeritPoints->GetMeritValue(MERIT_ENMITY_DECREASE, PChar);
+        enmityBonus += PChar->PMeritPoints->GetMeritValue(xi::Merit::EnmityIncrease, PChar) - PChar->PMeritPoints->GetMeritValue(xi::Merit::EnmityDecrease, PChar);
 
         if (PChar->StatusEffectContainer->HasStatusEffect(xi::StatusEffect::Souleater))
         {
-            enmityBonus -= PChar->PMeritPoints->GetMeritValue(MERIT_MUTED_SOUL, PChar);
+            enmityBonus -= PChar->PMeritPoints->GetMeritValue(xi::Merit::MutedSoul, PChar);
         }
     }
 
@@ -463,8 +463,6 @@ void CEnmityContainer::UpdateEnmityFromAttack(CBattleEntity* PEntity, int32 Dama
 
 CBattleEntity* CEnmityContainer::GetHighestEnmity()
 {
-    TracyZoneScoped;
-
     if (m_EnmityList.empty())
     {
         return nullptr;

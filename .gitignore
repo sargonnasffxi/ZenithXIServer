@@ -15,6 +15,7 @@
 build/
 build*/
 .cpm-cache/
+.cache/
 lbuild/
 build_mariadb_32/
 build_mariadb_64/
@@ -231,9 +232,6 @@ memcheck.out.*
 # Memory dumps
 *.dmp
 
-# Auto-generated files
-/src/common/version.cpp
-
 # Module init file
 modules/init.txt
 
@@ -273,3 +271,6 @@ clang_tidy_summary.md
 # YAML codegen
 *.codegen.json
 *.codegen.lua
+/data/schemas/*.schema.json
+!/data/schemas/_*.schema.json
+xi_data_schema

@@ -166,6 +166,8 @@ xi.mobSkill =
     BERSERK_DHALMEL               =  286,
     HEALING_BREEZE                =  287,
 
+    WHISTLE_CALL                  =  293,
+
     ENTANGLE_DRAIN                =  299,
     HEAD_BUTT_1                   =  300,
     DREAM_FLOWER_1                =  301,
@@ -188,6 +190,7 @@ xi.mobSkill =
 
     BAD_BREATH_1                  =  319,
 
+    NEEDLESHOT_1                  =  321,
     THOUSAND_NEEDLES_1            =  322,
     WILD_CARROT_1                 =  323,
 
@@ -215,7 +218,9 @@ xi.mobSkill =
     BIONIC_BOOST                  =  359,
     FLYING_HIP_PRESS              =  360,
     EARTH_SHOCK                   =  361,
+    DOUBLE_CLAW_1                 =  362,
 
+    SPINNING_TOP_1                =  365,
     TAIL_BLOW_1                   =  366,
     FIREBALL_1                    =  367,
     BLOCKHEAD_1                   =  368,
@@ -247,7 +252,10 @@ xi.mobSkill =
     WHISPERS_OF_IRE               =  398,
 
     HAMMER_BEAK                   =  406,
+    POISON_PICK                   =  407,
+    SOUND_VACUUM_COCKATRICE       =  408,
 
+    SOUND_BLAST                   =  410,
     BALEFUL_GAZE_COCKATRICE       =  411,
     RANGED_ATTACK_2               =  412,
     EAGLE_EYE_SHOT_HUMANOID       =  413,
@@ -290,16 +298,16 @@ xi.mobSkill =
 
     PETRIFACTIVE_BREATH           =  480,
 
+    POUNCE                        =  482,
     CHARGED_WHISKER               =  483,
-
     BLACK_CLOUD                   =  484,
     BLOOD_SABER                   =  485,
-
     WHIP_TONGUE                   =  486,
     TRANSMOGRIFICATION            =  487, -- Mammet-800
 
     STINKING_GAS                  =  489,
 
+    CALL_OF_THE_GRAVE             =  491,
     ABYSS_BLAST                   =  492,
 
     SNORT_1                       =  495,
@@ -347,9 +355,16 @@ xi.mobSkill =
     SOMNOLENCE_1                  =  545,
     NOCTOSHIELD_1                 =  546,
     ULTIMATE_TERROR_1             =  547,
+    BLINDEYE_1                    =  548,
+    EYES_ON_ME_1                  =  549,
+    HYPNOSIS_1                    =  550,
+    MIND_BREAK_1                  =  551,
+    BINDING_WAVE_1                =  552,
+    AIRY_SHIELD_1                 =  553,
 
+    MAGIC_BARRIER_1               =  555,
     DREAM_SHROUD_1                =  556,
-
+    LEVEL_5_PETRIFY_1             =  557,
     NIGHTMARE_1                   =  558,
 
     SLING_BOMB_1                  =  567,
@@ -370,6 +385,8 @@ xi.mobSkill =
     CACODEMONIA_1                 =  582,
 
     BLANK_GAZE                    =  586,
+
+    MORTAL_RAY_MINOTAUR           =  589,
 
     BOMB_TOSS_1                   =  591,
 
@@ -423,11 +440,14 @@ xi.mobSkill =
     VENOM_1                       =  660,
     SNOW_CLOUD_1                  =  661,
 
+    ICE_ROAR_1                    =  663,
+    IMPACT_ROAR_1                 =  664,
     GRAND_SLAM_1                  =  665,
 
     POWER_ATTACK_ARMED_1          =  667,
     KICK_BACK                     =  668,
     IMPLOSION                     =  669,
+    SHADOW_LORD_DEATH             =  670,
 
     UMBRA_SMASH                   =  671,
     GIGA_SLASH                    =  672,
@@ -489,6 +509,12 @@ xi.mobSkill =
 
     FISSION                       =  755,
 
+    DEADLY_HOLD_1                 =  797,
+    TAIL_SWING_1                  =  798,
+    TAIL_SMASH_1                  =  799,
+    HEAT_BREATH_1                 =  800,
+    RIDDLE_1                      =  801,
+    GREAT_SANDSTORM_1             =  802,
     GREAT_WHIRLWIND_1             =  803,
     TORTOISE_SONG_1               =  804,
     HEAD_BUTT_TURTLE_1            =  805,
@@ -703,8 +729,8 @@ xi.mobSkill =
 
     GOBLIN_DICE_RESET             = 1109,
 
-    EES_YAGUDO                    = 1121,
-    EES_QUADAV                    = 1122,
+    EES_QUADAV                    = 1121,
+    EES_YAGUDO                    = 1122,
 
     DYNAMIC_IMPLOSION             = 1127,
     TRANSFUSION                   = 1128,
@@ -715,6 +741,7 @@ xi.mobSkill =
     OBLIVION_SMASH_2              = 1133,
     TERA_SLASH_1                  = 1134,
     TERA_SLASH_2                  = 1135,
+    PET_CHARM                     = 1142,
 
     EES_KINDRED                   = 1151,
 
@@ -858,7 +885,7 @@ xi.mobSkill =
     PLASMA_CHARGE                 = 1358,
     CHTHONIAN_RAY                 = 1359,
     APOCALYPTIC_RAY               = 1360,
-
+    VISCID_SECRETION              = 1361,
     WILD_GINSENG                  = 1362,
     HUNGRY_CRUNCH                 = 1363,
 
@@ -971,7 +998,21 @@ xi.mobSkill =
     ENERGY_SCREEN                 = 1522,
     MANA_SCREEN                   = 1523,
     DISSIPATION                   = 1524,
+    GUIDED_MISSILE_II             = 1525,
+    COLOSSAL_BLOW                 = 1526,
+    LASER_SHOWER                  = 1527,
+    FLOODLIGHT                    = 1528,
+    HYPER_PULSE_2                 = 1529,
+    STUN_CANNON                   = 1530,
 
+    POD_EJECTION                  = 1532,
+    PILE_PITCH_2                  = 1533,
+    GUIDED_MISSILE_2              = 1534,
+    HYPER_PULSE_3                 = 1535,
+    TARGET_ANALYSIS_2             = 1536,
+    DISCHARGER_2                  = 1537,
+    ION_EFFLUX_2                  = 1538,
+    REAR_LASERS_2                 = 1539,
     CITADEL_BUSTER                = 1540,
 
     TRAMPLE_BAHAMUT               = 1542,
@@ -989,7 +1030,11 @@ xi.mobSkill =
 
     CAMISADO_2                    = 1554,
 
+    REGENERATION_2                = 1556,
     -- EES_?                         = 1557,
+    SMITE_OF_FURY_2               = 1558,
+    FLURRY_OF_RAGE_2              = 1559,
+    WHISPERS_OF_IRE_2             = 1560,
 
     FOOT_KICK_2                   = 1567,
     DUST_CLOUD_2                  = 1568,
@@ -1001,21 +1046,91 @@ xi.mobSkill =
     PUTRID_BREATH_1               = 1608, -- Cirrate Christelle - Mobskill Version
     PUTRID_BREATH_2               = 1609, -- Cirrate Christelle - Skill Attack version
 
+    GLOEOSUCCUS_2                 = 1613,
+
+    SOPORIFIC_2                   = 1615,
+    PALSY_POLLEN_2                = 1616,
+
     FROGKICK_2                    = 1621,
+    CURSED_SPHERE_2               = 1622,
+    VENOM_2                       = 1623,
+    DEBILITATING_DRONE_2          = 1624,
+    TWO_THOUSAND_NEEDLES_1        = 1625,
+    FOUR_THOUSAND_NEEDLES_1       = 1626,
+
+    HEAT_BREATH_2                 = 1628,
+    RIDDLE_2                      = 1629,
+    GREAT_SANDSTORM_2             = 1630,
+    GREAT_WHIRLWIND_2             = 1631,
+    CHOKE_BREATH_2                = 1632,
 
     SHEEP_BLEAT_2                 = 1633,
     SHEEP_SONG_2                  = 1634,
     SHEEP_CHARGE_3                = 1635,
+    TREBUCHET_2                   = 1636,
+    POWER_ATTACK_3                = 1637,
+    LIGHTNING_ROAR_2              = 1638,
+    IMPACT_ROAR_2                 = 1639,
+    GRAND_SLAM_2                  = 1640,
+    EES_ANTAEUS                   = 1641,
+    WHIRL_OF_RAGE_2               = 1642,
+    SMITE_OF_RAGE_2               = 1643,
+    HYPOTHERMAL_COMBUSTION_3      = 1644,
+    FREEZE_RUSH_2                 = 1645,
+    COLD_WAVE_3                   = 1646,
+    BERSERK_BOMB_2                = 1647,
+    CRYSTAL_SHIELD_2              = 1648,
+    HEAVY_STRIKE_2                = 1649,
+    ICE_BREAK_2                   = 1650,
+    THUNDER_BREAK_2               = 1651,
+    CRYSTAL_RAIN_2                = 1652,
+    CRYSTAL_WEAPON_FIRE_2         = 1653,
+    CRYSTAL_WEAPON_STONE_2        = 1654,
+    CRYSTAL_WEAPON_WATER_2        = 1655,
+    CRYSTAL_WEAPON_WIND_2         = 1656,
+    BLIND_VORTEX_2                = 1657,
+    GIGA_SCREAM_2                 = 1658,
+    DREAD_DIVE_2                  = 1659,
+    FEATHER_BARRIER_2             = 1660,
+    STORMWIND_2                   = 1661,
 
-    -- EES_?                         = 1641,
-
+    ULTRASONICS_2                 = 1662,
+    BLOOD_DRAIN_2                 = 1663,
+    SUBSONICS_2                   = 1664,
+    MARROW_DRAIN_2                = 1665,
+    SONIC_BOOM_2                  = 1666,
+    JET_STREAM_2                  = 1667,
+    SLIPSTREAM_2                  = 1668,
+    TURBULENCE_2                  = 1669,
+    TENTACLE_2                    = 1670,
+    INK_JET_2                     = 1671,
+    HARD_MEMBRANE_2               = 1672,
+    CROSS_ATTACK_2                = 1673,
+    REGENERATION_3                = 1674,
+    MAELSTROM_2                   = 1675,
+    WHIRLWIND_2                   = 1676,
     ROAR_2                        = 1677,
     RAZOR_FANG_2                  = 1678,
     CLAW_CYCLONE_2                = 1679,
+    PREDATORY_GLARE_2             = 1680,
+    CROSSTHRASH_2                 = 1681,
+    RIPPER_FANG_2                 = 1682,
+
+    FOUL_BREATH_2                 = 1684,
+    FROST_BREATH_2                = 1685,
+    THUNDERBOLT_2                 = 1686,
+    CHOMP_RUSH_2                  = 1687,
+    SCYTHE_TAIL_2                 = 1688,
+    DOUBLE_CLAW_2                 = 1689,
+    GRAPPLE_2                     = 1690,
+    FILAMENTED_HOLD_2             = 1691,
+    SPINNING_TOP_2                = 1692,
 
     HYPNIC_LAMP                   = 1695, -- Unique entry.
 
     PROBOSCIS_SHOWER              = 1708,
+
+    BUGLE_CALL                    = 1712,
 
     KIBOSH                        = 1725,
     CUTPURSE                      = 1726,
@@ -1048,7 +1163,11 @@ xi.mobSkill =
     POLAR_BULWARK                 = 1831,
     BAROFIELD                     = 1832,
 
+    TREMBLING                     = 1834,
+    SERPENTINE_TAIL               = 1835,
     NERVE_GAS                     = 1836,
+
+    MINE_BLAST                    = 1838,
 
     SANDBLAST_2                   = 1841,
     SANDPIT_2                     = 1842,
@@ -1115,6 +1234,7 @@ xi.mobSkill =
     WATER_SHOT                    = 2014,
     LIGHT_SHOT                    = 2015,
     DARK_SHOT                     = 2016,
+    FRAME_CHANGE_AUTOMATON        = 2018,
 
     -- HUNDRED_FISTS                 = 2020,
     ERASER_AUTOMATON              = 2021,

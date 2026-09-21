@@ -173,6 +173,15 @@ end
 function CBaseEntity:resetLocalVars()
 end
 
+---@nodiscard
+---@return table
+function CBaseEntity:getData()
+end
+
+---@return nil
+function CBaseEntity:resetData()
+end
+
 ---@param prefix string
 ---@return nil
 function CBaseEntity:clearVarsWithPrefix(prefix)
@@ -550,15 +559,11 @@ end
 function CBaseEntity:LimitDistance()
 end
 
----@param careful boolean
----@return nil
-function CBaseEntity:setCarefulPathing(careful)
-end
-
 ---@nodiscard
 ---@param target CBaseEntity
+---@param ignoreInvisibleBoundaries boolean?
 ---@return boolean
-function CBaseEntity:canSee(target)
+function CBaseEntity:canSee(target, ignoreInvisibleBoundaries)
 end
 
 ---@nodiscard
@@ -574,15 +579,6 @@ end
 ---@param seconds integer?
 ---@return nil
 function CBaseEntity:closeDoor(seconds)
-end
-
----@param id integer
----@param lowerDoor integer
----@param upperDoor integer
----@param elevatorId integer
----@param reversed boolean
----@return nil
-function CBaseEntity:setElevator(id, lowerDoor, upperDoor, elevatorId, reversed)
 end
 
 ---@param id integer
@@ -1700,27 +1696,27 @@ function CBaseEntity:delTitle(titleID)
 end
 
 ---@nodiscard
----@param areaObj table|integer
+---@param area xi.fameArea
 ---@return integer
-function CBaseEntity:getFame(areaObj)
+function CBaseEntity:getFame(area)
 end
 
----@param areaObj table|integer
+---@param area xi.fameArea
 ---@param fame integer
 ---@return nil
-function CBaseEntity:addFame(areaObj, fame)
+function CBaseEntity:addFame(area, fame)
 end
 
----@param areaObj table|integer
+---@param area xi.fameArea
 ---@param fame integer
 ---@return nil
-function CBaseEntity:setFame(areaObj, fame)
+function CBaseEntity:setFame(area, fame)
 end
 
 ---@nodiscard
----@param areaObj table|integer
+---@param area xi.fameArea
 ---@return integer
-function CBaseEntity:getFameLevel(areaObj)
+function CBaseEntity:getFameLevel(area)
 end
 
 ---@nodiscard
@@ -1985,8 +1981,9 @@ function CBaseEntity:unseenKeyItem(keyItemID)
 end
 
 ---@param exp integer
+---@param allowLimitPoints boolean? Defaults to true. False grants EXP only without a gain message.
 ---@return nil
-function CBaseEntity:addExp(exp)
+function CBaseEntity:addExp(exp, allowLimitPoints)
 end
 
 ---@param capacity integer
@@ -2192,6 +2189,15 @@ end
 ---@param value integer
 ---@return nil
 function CBaseEntity:setHP(value)
+end
+
+---@class DeathParams
+---@field expLoss boolean? Whether the death costs experience points. Defaults to true
+---@field mijin boolean? Mijin Gakure: no weakness and half HP back on raise. Defaults to false
+
+---@param params DeathParams?
+---@return nil
+function CBaseEntity:die(params)
 end
 
 ---@param value integer
@@ -2603,6 +2609,11 @@ function CBaseEntity:getBattlefield()
 end
 
 ---@nodiscard
+---@return CBattlefield?
+function CBaseEntity:getRegisteredBattlefield()
+end
+
+---@nodiscard
 ---@return integer
 function CBaseEntity:getBattlefieldID()
 end
@@ -2958,8 +2969,8 @@ end
 ---@class StatusEffectParams
 ---@field origin CBaseEntity
 ---@field power number?
----@field duration number?
----@field tick number?
+---@field duration number? Seconds
+---@field tick number? Seconds
 ---@field icon xi.effect? Defaults to effectId if not set
 ---@field subType integer?
 ---@field subPower number?
@@ -3228,7 +3239,7 @@ function CBaseEntity:setStatDebilitation(statDebil)
 end
 
 ---@nodiscard
----@param statId integer
+---@param statId integer|xi.mod
 ---@param optSlot integer?
 ---@return integer
 function CBaseEntity:getStat(statId, optSlot)
@@ -3390,8 +3401,8 @@ end
 ---@param caster CBaseEntity
 ---@param spell CSpell
 ---@param damage integer
----@param atkType integer
----@param dmgType integer
+---@param atkType integer|xi.attackType
+---@param dmgType integer|xi.damageType
 ---@return nil
 function CBaseEntity:takeSpellDamage(caster, spell, damage, atkType, dmgType)
 end
@@ -3421,6 +3432,11 @@ end
 ---@param arg0 integer? Optional Pet ID
 ---@return nil
 function CBaseEntity:spawnPet(arg0)
+end
+
+---@param petId integer
+---@return nil
+function CBaseEntity:setPetStats(petId)
 end
 
 ---@return nil
@@ -3834,6 +3850,11 @@ end
 ---@param seconds integer
 ---@return nil
 function CBaseEntity:setRespawnTime(seconds)
+end
+
+---@nodiscard
+---@return table
+function CBaseEntity:getSpawnSlotMobs()
 end
 
 ---@param groupID integer
