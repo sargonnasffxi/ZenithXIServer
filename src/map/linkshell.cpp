@@ -103,7 +103,7 @@ void CLinkshell::setMessage(const std::string& message, const std::string& poste
             .linkshellName = m_name,
             .poster        = poster,
             .message       = message,
-            .postTime      = 0, // Indicator to look up the LS message
+            .postTime      = postTime,
         });
     }
 }
@@ -208,7 +208,6 @@ void CLinkshell::ChangeMemberRank(const std::string& MemberName, const uint8 req
                     newShellItem->setQuantity(1);
                     std::memcpy(newShellItem->m_extra, PItemLinkshell->m_extra, 24);
                     newShellItem->SetLSType(newId == ITEMID::PEARLSACK ? LSTYPE_PEARLSACK : LSTYPE_LINKPEARL);
-                    newShellItem->setSubType(ITEM_LOCKED);
                     uint8 LocationID = PItemLinkshell->getLocationID();
                     uint8 SlotID     = PItemLinkshell->getSlotID();
 
@@ -281,7 +280,6 @@ void CLinkshell::RemoveMemberByName(const std::string& MemberName, uint8 request
             {
                 linkshell::DelOnlineMember(PMember, PItemLinkshell);
 
-                PItemLinkshell->setSubType(ITEM_UNLOCKED);
                 PMember->clearEquip(slot);
                 if (slot == SLOT_LINK1)
                 {
@@ -386,7 +384,7 @@ void CLinkshell::PushLinkshellMessage(CCharEntity* PChar, LinkshellSlot slot)
         const auto messageTime = rset->getOrDefault<uint32>("messagetime", 0);
         if (!message.empty())
         {
-            PChar->pushPacket<GP_SERV_COMMAND_LINKSHELL_MESSAGE>(poster, message, m_name, messageTime, slot);
+            PChar->pushPacket<GP_SERV_COMMAND_LINKSHELL_MESSAGE>(poster, message, m_name, messageTime, slot, m_postRights, GP_SERV_COMMAND_LINKSHELL_MESSAGE::MessageOp::Load);
         }
         // TODO: No message sends a 0xCC packet that prints "No linkshell message set."
     }
@@ -499,7 +497,7 @@ uint32 RegisterNewLinkshell(const std::string& name, uint16 color)
         if (db::preparedStmt("INSERT INTO linkshells (name, color, postrights) VALUES (?, ?, ?)",
                              name,
                              color,
-                             static_cast<uint8>(LSTYPE_PEARLSACK)))
+                             static_cast<uint8>(GP_CLI_COMMAND_SET_LSMSG_WRITELEVEL::Pearlsack)))
         {
             const auto rset = db::preparedStmt("SELECT linkshellid FROM linkshells WHERE name = ? AND broken != 1", name);
             if (rset && rset->rowsCount() && rset->next())

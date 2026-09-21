@@ -84,6 +84,17 @@ end
 function CClientEntityPairActions:acceptPartyInvite()
 end
 
+---Leave the current party
+---@return nil
+function CClientEntityPairActions:leaveParty()
+end
+
+---Level sync the party to a member (caller must be party leader)
+---@param player CBaseEntity Party member to sync to
+---@return nil
+function CClientEntityPairActions:setLevelSync(player)
+end
+
 ---@class TradeItem
 ---@field itemId xi.item Item ID
 ---@field quantity? integer Quantity (default: 1)
@@ -116,10 +127,12 @@ end
 function CClientEntityPairActions:tradeOffer(tradeIndex, invSlot, itemId, quantity)
 end
 
----Clear a trade slot.
+---Clear a trade slot. The client repeats the item it is clearing, so pass what was staged.
 ---@param tradeIndex integer Trade slot, 0..8
+---@param invSlot integer Inventory slot of the staged item
+---@param itemId xi.item Item ID
 ---@return nil
-function CClientEntityPairActions:tradeClearSlot(tradeIndex)
+function CClientEntityPairActions:tradeClearSlot(tradeIndex, invSlot, itemId)
 end
 
 ---Lock in this side's offer. Trade goes through once both sides lock.
@@ -130,6 +143,30 @@ end
 ---Cancel the trade.
 ---@return nil
 function CClientEntityPairActions:tradeCancel()
+end
+
+---@param invSlot integer
+---@param price integer
+---@return nil
+function CClientEntityPairActions:bazaarPrice(invSlot, price)
+end
+
+---@param seller CClientEntityPair
+---@return nil
+function CClientEntityPairActions:bazaarOpen(seller)
+end
+
+---Set the player's search comment
+---@param message string
+---@param msgType? integer
+---@return nil
+function CClientEntityPairActions:setSearchMessage(message, msgType)
+end
+
+---@param sellerInvSlot integer
+---@param quantity integer
+---@return nil
+function CClientEntityPairActions:bazaarBuy(sellerInvSlot, quantity)
 end
 
 ---Accept raise prompt
@@ -179,6 +216,13 @@ end
 ---@nodiscard
 ---@return table<integer, GuildListEntry> list Entries keyed by item ID
 function CClientEntityPairActions:guildSellList()
+end
+
+---Buy from the currently open shop
+---@param shopSlot integer Index into the shop's item list
+---@param quantity integer Amount to buy
+---@return nil
+function CClientEntityPairActions:shopBuy(shopSlot, quantity)
 end
 
 ---Move an item between containers or split a stack
@@ -240,7 +284,8 @@ end
 ---@param addContainer xi.inventoryLocation Container holding the seed or crystal
 ---@param addSlot integer Seed or crystal slot index
 ---@return nil
-function CClientEntityPairActions:plantAdd(potContainer, potSlot, addContainer, addSlot)
+---@param addItemNo integer? what the packet claims is being planted, defaults to the slot's item
+function CClientEntityPairActions:plantAdd(potContainer, potSlot, addContainer, addSlot, addItemNo)
 end
 
 ---Examine a plant; resets its wilt timer.

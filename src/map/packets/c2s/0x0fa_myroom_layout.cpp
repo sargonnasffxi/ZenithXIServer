@@ -20,6 +20,8 @@
 */
 
 #include "0x0fa_myroom_layout.h"
+#include "enums/item_state.h"
+#include "items/item_access.h"
 
 #include "entities/char_entity.h"
 #include "items/item_furnishing.h"
@@ -142,6 +144,7 @@ auto GP_CLI_COMMAND_MYROOM_LAYOUT::validate(MapSession* PSession, const CCharEnt
 {
     return PacketValidator(PChar)
         .blockedBy({ BlockedState::InEvent })
+        .isInMogHouse()
         .range("MyroomFloorFlg", this->MyroomFloorFlg, 0, 1) // Flag indicating if 2nd floor
         .range("v", this->v, 0, 3)                           // Rotation of the item (0-3)
         .range("y", this->y, 0, 25);                         // Stacking elevation (parent height / 10)
@@ -301,15 +304,27 @@ void GP_CLI_COMMAND_MYROOM_LAYOUT::process(MapSession* PSession, CCharEntity* PC
     // Continue with regular usage
     if (PItem->getID() == this->MyroomItemNo && PItem->isType(ITEM_FURNISHING))
     {
+        // already PlacedFurniture, and mark() only moves between states
+        if (PItem->state() != ItemState::PlacedFurniture && !xi::items::mark(PItem, ItemState::PlacedFurniture))
+        {
+            ShowWarningFmt("GP_CLI_COMMAND_MYROOM_LAYOUT: could not mark furnishing {} for {}", PItem->getID(), PChar->getName());
+            return;
+        }
+
         bool wasInstalled = PItem->isInstalled();
+
+        if (wasInstalled && PItem->getOn2ndFloor() != is2F)
+        {
+            ShowErrorFmt("Floor change on installed furnishing: {}", PChar->getName());
+            return;
+        }
+
         PItem->setInstalled(true);
         PItem->setOn2ndFloor(this->MyroomFloorFlg);
         PItem->setCol(this->x);
         PItem->setRow(this->z);
         PItem->setLevel(this->y);
         PItem->setRotation(this->v);
-
-        PItem->setSubType(ITEM_LOCKED);
 
         PChar->pushPacket<GP_SERV_COMMAND_MYROOM_OPERATION>(PItem, static_cast<CONTAINER_ID>(this->MyroomCategory), this->MyroomItemIndex);
 

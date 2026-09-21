@@ -25,11 +25,13 @@
 
 #include "ability.h"
 #include "ai/ai_container.h"
+#include "data/enums/key_item.h"
 #include "enmity_container.h"
 #include "entities/char_entity.h"
 #include "entities/trust_entity.h"
 #include "enums/msg_std.h"
 #include "items.h"
+#include "items/transactions/item_claim.h"
 #include "latent_effect_container.h"
 #include "packets/s2c/0x01d_item_same.h"
 #include "packets/s2c/0x029_battle_message.h"
@@ -97,7 +99,7 @@ auto GP_CLI_COMMAND_ACTION::validate(MapSession* PSession, const CCharEntity* PC
                     case GP_CLI_COMMAND_ACTION_ACTIONID::Attack:
                     {
                         // Note: It is possible to attack while fishing on retail and is disabled here on purpose.
-                        pv.blockedBy({ BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction });
+                        pv.blockedBy({ BlockedState::InEvent, BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction });
                         break;
                     }
                     case GP_CLI_COMMAND_ACTION_ACTIONID::CastMagic:
@@ -106,18 +108,18 @@ auto GP_CLI_COMMAND_ACTION::validate(MapSession* PSession, const CCharEntity* PC
                     case GP_CLI_COMMAND_ACTION_ACTIONID::Weaponskill:
                     case GP_CLI_COMMAND_ACTION_ACTIONID::MonsterSkill: // MonsterSkill is entirely assumed
                     {
-                        pv.blockedBy({ BlockedState::Healing, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction, BlockedState::Mounted })
+                        pv.blockedBy({ BlockedState::InEvent, BlockedState::Healing, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction, BlockedState::Mounted })
                             .mustEqual(PChar->animation == xi::Animation::None || PChar->animation == xi::Animation::Attack, true, "Character in invalid animation state.");
                         break;
                     }
                     case GP_CLI_COMMAND_ACTION_ACTIONID::Fish:
                     {
-                        pv.blockedBy({ BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction, BlockedState::Mounted });
+                        pv.blockedBy({ BlockedState::InEvent, BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing, BlockedState::PreventAction, BlockedState::Mounted });
                         break;
                     }
                     case GP_CLI_COMMAND_ACTION_ACTIONID::Mount:
                     {
-                        pv.blockedBy({ BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing });
+                        pv.blockedBy({ BlockedState::InEvent, BlockedState::Healing, BlockedState::Sitting, BlockedState::Crafting, BlockedState::Fishing });
                         break;
                     }
                     case GP_CLI_COMMAND_ACTION_ACTIONID::Dismount:
@@ -206,8 +208,13 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
             }
 
             // Releasing a trust
-            if (auto* PTrust = dynamic_cast<CTrustEntity*>(PNpc); PTrust && !PTrust->released())
+            if (auto* PTrust = dynamic_cast<CTrustEntity*>(PNpc))
             {
+                if (PTrust->PMaster != PChar || PTrust->released())
+                {
+                    return;
+                }
+
                 uint32_t trustTargId = PTrust->targid;
 
                 PTrust->setReleased(true);
@@ -438,20 +445,35 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
                 return;
             }
 
-            if (PGysahl->isSubType(ITEM_LOCKED) || PGysahl->getReserve() > 0)
+            if (PGysahl->isBusy())
             {
                 ShowWarningFmt("GP_CLI_COMMAND_ACTION: {} trying to use invalid gysahl greens (locked/reserved)", PChar->getName());
                 PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(GYSAHL_GREENS, 0, MsgStd::YouDontHaveAny);
                 return;
             }
 
-            // Consume Gysahl Green and push animation on dig attempt.
-            if (luautils::OnChocoboDig(PChar))
+            auto transaction = ItemClaimTransaction::start(PChar);
+            if (!transaction || !transaction->take(LOC_INVENTORY, slotID, 1))
             {
-                charutils::UpdateItem(PChar, LOC_INVENTORY, slotID, -1);
-                PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
-                PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_DIG>(PChar));
+                ShowWarningFmt("GP_CLI_COMMAND_ACTION: {} could not spend gysahl greens in slot {}", PChar->getName(), slotID);
+                PChar->pushPacket<GP_SERV_COMMAND_SYSTEMMES>(GYSAHL_GREENS, 0, MsgStd::YouDontHaveAny);
+                return;
             }
+
+            // greens are taken first, and a dig refused before it starts rolls them back.
+            // Digging and finding nothing returns true, so those greens are spent
+            if (!luautils::OnChocoboDig(PChar))
+            {
+                return;
+            }
+
+            if (!transaction->commit())
+            {
+                return;
+            }
+
+            PChar->pushPacket<GP_SERV_COMMAND_ITEM_SAME>(PChar);
+            PChar->loc.zone->PushPacket(PChar, CHAR_INRANGE_SELF, std::make_unique<GP_SERV_COMMAND_DIG>(PChar));
         }
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Dismount:
@@ -529,7 +551,12 @@ void GP_CLI_COMMAND_ACTION::process(MapSession* PSession, CCharEntity* PChar) co
         break;
         case GP_CLI_COMMAND_ACTION_ACTIONID::Mount:
         {
-            const auto mountKeyItem = static_cast<KeyItem>(static_cast<uint16_t>(KeyItem::CHOCOBO_COMPANION) + this->Mount.MountId);
+            if (this->Mount.MountId > 3108 - static_cast<uint16_t>(xi::KeyItem::ChocoboCompanion))
+            {
+                return;
+            }
+
+            const auto mountKeyItem = static_cast<xi::KeyItem>(static_cast<uint16_t>(xi::KeyItem::ChocoboCompanion) + this->Mount.MountId);
 
             if (PChar->animation != xi::Animation::None || PChar->StatusEffectContainer->HasPreventActionEffect())
             {
